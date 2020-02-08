@@ -1,0 +1,28 @@
+logging:
+  level:
+    in.bug.rui.web: debug
+debug: true
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/sf2cs?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  redis:
+    host: 127.0.0.1
+    timeout: 60
+    port: 6379
+    database: 0
+    password:
+
+
+application:
+  task-pool:
+    common:
+      core-pool-size: 10
+      max-pool-size: 20
+      keep-alive-seconds: 60
