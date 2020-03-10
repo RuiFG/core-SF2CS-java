@@ -6,9 +6,11 @@
 
     <groupId>in.bug.rui</groupId>
     <artifactId>core-SF2CS-java</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-    <module>web</module>
+        <module>web</module>
+        <module>jni</module>
     </modules>
 
 
