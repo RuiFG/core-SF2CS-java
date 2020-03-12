@@ -1,0 +1,32 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: face-recognize-server
+
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/sf2cs?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+  cloud:
+    consul:
+      discovery:
+        service-name: ${spring.application.name}
+      host: localhost
+      port: 8500
+
+
+application:
+  face-recognize:
+    core-pool-size: 20
+    max-pool-size: 30
+    keep-alive-seconds: 700
+    point: MODEL_5
+    version: LINUX_X64
+    device: AUTO

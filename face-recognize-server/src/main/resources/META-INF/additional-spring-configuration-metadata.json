@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "application.face-recognize.core-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Description for application.face-recognize.core-pool-size."
+    }
+  ]
+}

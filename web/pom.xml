@@ -2,16 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>web</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>web</name>
-    <description>Demo project for Spring Boot</description>
     <parent>
-        <groupId>in.bug.rui</groupId>
+        <groupId>in.bugr</groupId>
         <artifactId>core-SF2CS-java</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
+    <packaging>jar</packaging>
+    <artifactId>web</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -30,6 +27,17 @@
             </exclusions>
         </dependency>
 
+        <!--mysql数据库连接驱动依赖-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,6 +53,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>in.bugr</groupId>
+            <artifactId>common</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,6 +1,7 @@
 package in.bugr.web.entity;
 
 import com.google.gson.JsonObject;
+import in.bugr.entity.BaseEntity;
 import in.bugr.web.commponent.JsonObjectConverter;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
