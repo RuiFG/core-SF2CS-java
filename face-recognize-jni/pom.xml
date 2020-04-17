@@ -12,5 +12,10 @@
 
     <artifactId>face-recognize-jni</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>in.bugr</groupId>
+            <artifactId>face-recognize-common</artifactId>
+        </dependency>
+    </dependencies>
 </project>

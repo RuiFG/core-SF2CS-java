@@ -3,16 +3,20 @@ server:
 
 spring:
   application:
-    name: face-recognize-server
+    name: server
 
+  redis:
+    host: 127.0.0.1
+    timeout: 60
+    port: 6379
+    database: 0
+    password:
   datasource:
     username: root
     password: 123456
     url: jdbc:mysql://127.0.0.1:3306/sf2cs?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
-      hibernate:
-        ddl-auto: update
       show-sql: true
   cloud:
     consul:
@@ -20,13 +24,15 @@ spring:
         service-name: ${spring.application.name}
       host: localhost
       port: 8500
-
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
 application:
   face-recognize:
-    core-pool-size: 20
-    max-pool-size: 30
-    keep-alive-seconds: 700
+    core-pool-size: 5
+    max-pool-size: 10
     point: MODEL_5
-    version: LINUX_X64
     device: AUTO
+    threshold: 0.75f
+    wait-second: 2
+

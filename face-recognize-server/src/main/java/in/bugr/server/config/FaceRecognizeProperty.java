@@ -17,7 +17,8 @@ public class FaceRecognizeProperty {
 
     private int corePoolSize;
     private int maxPoolSize;
-    private int keepAliveSeconds;
+    private int waitSecond;
+
     /**
      * 最小人脸检测尺寸
      */
@@ -34,15 +35,15 @@ public class FaceRecognizeProperty {
      * 第三检测阈值
      */
     private double threshold3 = 0.9d;
+    /**
+     * 最终检测阈值
+     */
+    private float threshold;
 
     /**
      * 5点 or 81点
      */
     private FaceEngineFacade.Point point;
-    /**
-     * 运行平台
-     */
-    private LibManager.Version version;
     /**
      * 检测模型路径
      */

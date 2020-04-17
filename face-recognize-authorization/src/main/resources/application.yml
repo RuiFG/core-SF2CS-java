@@ -1,0 +1,51 @@
+server:
+  port: 6888
+
+spring:
+  application:
+    name: authorization
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/sf2cs?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  redis:
+    host: 127.0.0.1
+    timeout: 60
+    port: 6379
+    database: 0
+    password:
+  main:
+    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://118.24.1.170:8888/.well-known/jwks.json
+  cloud:
+    consul:
+      discovery:
+        service-name: ${spring.application.name}
+      host: localhost
+      port: 8500
+
+application:
+  oauth:
+    redirect_uri: http://127.0.0.1:8081/#/login
+    authorization-server-url: http://118.24.1.170:8888
+    token-info-uri: /oauth/check_token
+    access-token-uri: /oauth/token
+    user-info-uri: /auth/me
+    jwk-set-uri: /.well-known/jwks.json
+    client-id: sf2cs
+    client-secret: 0d04f678-fbc8-4f47-b0d4-8dc634005874
+    grant-type: password,refresh_token,sms,email,authorization_code
+    scope: READ
+
+logging:
+  level:
+    in.bugr.oauth.repository.OauthRepository: debug

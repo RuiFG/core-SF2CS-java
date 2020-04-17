@@ -1,14 +1,27 @@
 package in.bugr.jni.model;
 
-import in.bugr.jni.ImageHelper;
+import in.bugr.entity.Person;
+import in.bugr.ImageHelper;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * @author bugrui
  */
 public class ImageData {
     public static class ModelMapper {
+        public static ImageData toImageData(Person person) throws IOException {
+            ImageData imageData = new ImageData();
+            imageData.data = person.getFaceData();
+            imageData.channels = person.getChannels();
+            imageData.width = person.getWidth();
+            imageData.height = person.getHeight();
+            return imageData;
+        }
+
         public static ImageData toImageData(BufferedImage bufferedImage) {
             byte[] bytes = ImageHelper.getMatrixBGR(bufferedImage);
             ImageData imageData = new ImageData();
@@ -17,6 +30,12 @@ public class ImageData {
             imageData.height = bufferedImage.getHeight();
             imageData.data = bytes;
             return imageData;
+        }
+
+        public static ImageData toImageData(byte[] data) throws IOException {
+            ByteArrayInputStream in = new ByteArrayInputStream(data);
+            BufferedImage image = ImageIO.read(in);
+            return toImageData(image);
         }
 
         public static BufferedImage toBufferedImage(ImageData imageData) {

@@ -1,10 +1,13 @@
 package in.bugr.jni;
 
 import lombok.Getter;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author BugRui
@@ -37,34 +40,59 @@ public class LibManager {
         }
     }
 
-    private final String libPath;
+    private static String LIB_PATH;
 
-    private final Version version;
+    private final static Version VERSION;
 
-    private  volatile FaceEngine engine;
+    static {
+        String system = System.getProperty("os.name").toLowerCase();
+        String arch = System.getProperty("java.vm.name").toLowerCase();
+        if (system.contains("windows")) {
+            if (arch.contains("32")) {
+                VERSION = Version.WINDOWS_X64;
+            } else {
+                VERSION = Version.WINDOWS_X64;
+            }
+        } else if (system.contains("linux")) {
+            if (arch.contains("32")) {
+                VERSION = Version.LINUX_X64;
+            } else {
+                VERSION = Version.LINUX_X64;
+            }
+        } else {
+            throw new Error("System version error");
+        }
 
+    }
 
-    LibManager(Version version, String libPath) {
-        this.version = version;
-        this.libPath = libPath;
+    private static final AtomicInteger COUNTER = new AtomicInteger(0);
+
+    private LibManager() {
     }
 
     /**
      * 加载dll
      */
-    private void loadLibrary() {
-
-        for (String filename : this.version.getLibFiles()) {
-            // 仅load dll
-            if (filename.toLowerCase().endsWith(".dll") || filename.toLowerCase().endsWith(".so") || filename.toLowerCase().endsWith("d80ecca")) {
-                try {
-                    loadLibrary(libPath, filename);
-                } catch (IOException e) {
-                    e.printStackTrace();
+    static void loadLibrary(String paramLibPath) {
+        if (StringUtils.isBlank(LIB_PATH)) {
+            synchronized (LibManager.class) {
+                if (StringUtils.isBlank(LIB_PATH)) {
+                    LIB_PATH = paramLibPath;
+                    for (String filename : VERSION.getLibFiles()) {
+                        // 仅load dll
+                        if (filename.toLowerCase().endsWith(".dll") ||
+                                filename.toLowerCase().endsWith(".so") ||
+                                filename.toLowerCase().endsWith("d80ecca")) {
+                            try {
+                                loadLibrary(LIB_PATH, filename);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
             }
         }
-
     }
 
     /**
@@ -74,22 +102,13 @@ public class LibManager {
      * @param file 文件名
      * @throws IOException 异常
      */
-    private void loadLibrary(String path, String file) throws IOException {
+    private static void loadLibrary(String path, String file) throws IOException {
         File libFile = new File(path, file);
         System.load(libFile.getCanonicalPath());
     }
 
-    public FaceEngine init() {
-        if (engine == null) {
-            synchronized (LibManager.class) {
-                if (engine == null) {
-                    loadLibrary();
-                    engine = new FaceEngine();
-                }
-            }
-        }
-        return engine;
+    static FaceEngine instance() {
+        return new FaceEngine(COUNTER.addAndGet(1));
     }
-
-
 }
+

@@ -5,6 +5,6 @@ package in.bugr.jni.model;
  * @date 2020/3/10 下午3:30
  **/
 public class QueryResult {
-    int index;
-    float score;
+    public int index;
+    public float score;
 }

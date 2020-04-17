@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      discovery:
+        service-name: ${spring.application.name}
+      host: localhost
+      port: 8500
+    gateway:
+      httpclient:
+        websocket:
+          max-frame-payload-length: 10485760
+      routes:
+        - id: management-publish
+          uri: lb://management
+          predicates:
+            - Path=/management/publish/*
+          filters:
+            - StripPrefix=1
+            - WebSocketAuthorize=true
+        - id: management-collector
+          uri: lb://management
+          predicates:
+            - Path=/management//collect/*/*
+          filters:
+            - StripPrefix=1
+            - WebSocketAuthorize=true
+        - id: management
+          uri: lb://management
+          predicates:
+            - Path=/management/**
+          filters:
+            - StripPrefix=1
+            - Authorize=true
+        - id: server
+          uri: lb://server
+          predicates:
+            - Path=/server/**
+          filters:
+            - StripPrefix=1
+            - Authorize=true
+        - id: auth-code
+          uri: lb://authorization
+          predicates:
+            - Path=/authorization/oauth/code/*
+          filters:
+            - StripPrefix=1
+        - id: auth-me
+          uri: lb://authorization
+          predicates:
+            - Path=/authorization/auth/me
+          filters:
+            - StripPrefix=1
+            - Authorize=true
+server:
+  port: 9999
+

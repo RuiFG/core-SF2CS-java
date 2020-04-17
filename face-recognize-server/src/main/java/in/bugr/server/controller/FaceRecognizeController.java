@@ -1,41 +1,53 @@
 package in.bugr.server.controller;
 
-import in.bugr.server.config.FaceRecognizeProperty;
 import in.bugr.server.service.FaceRecognizeService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
+import java.io.IOException;
 
 /**
  * @author BugRui
  * @date 2020/3/12 下午1:45
  **/
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class FaceRecognizeController {
-
-
-    @NotNull
-    private final Registration registration;
-
-    @NotNull
-    private final FaceRecognizeProperty faceRecognizeProperty;
-
     @NotNull
     private final FaceRecognizeService faceRecognizeService;
 
-    @GetMapping("info")
-    public String info() {
-        HashMap<String, String> result = new HashMap<>();
-        result.put("info", "ok");
-        result.put("uri", registration.getUri().toString());
-        result.put("face-recognize.number", String.valueOf(faceRecognizeProperty.getCorePoolSize()));
-        return result.toString();
+    @PostMapping("/detect")
+    public String detect(@RequestParam("file") MultipartFile file) throws IOException {
+        byte[] imgBytes = file.getBytes();
+        faceRecognizeService.detect(imgBytes);
+        return "检测人脸通过";
     }
+
+    @PostMapping("/person/{id}/compare")
+    public String detectPerson(@RequestParam("file") MultipartFile file, @PathVariable("id") Long id) throws IOException {
+        byte[] imgBytes = file.getBytes();
+        faceRecognizeService.compare(id, imgBytes);
+        return "人脸匹配成功";
+    }
+
+    @PostMapping("gather/{gatherId}/person/{personId}")
+    public String register(@PathVariable Long gatherId, @PathVariable Long personId) {
+        faceRecognizeService.register(personId, gatherId);
+        return "注册人脸成功";
+    }
+
+    @DeleteMapping("gather/{gatherId}/person/{personId}")
+    public String delete(@PathVariable Long gatherId, @PathVariable Long personId) {
+        faceRecognizeService.deletePersonFromGather(personId, gatherId);
+        return "删除人脸成功";
+    }
+
 }

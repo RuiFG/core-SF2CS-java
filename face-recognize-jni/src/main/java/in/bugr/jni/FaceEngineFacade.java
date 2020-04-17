@@ -10,10 +10,8 @@ import in.bugr.jni.model.QueryResultArray;
 import in.bugr.jni.model.Rect;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -29,11 +27,11 @@ import java.io.IOException;
 public class FaceEngineFacade {
     private final FaceEngine faceEngine;
 
+    private boolean live = true;
+
     private FaceEngineFacade(FaceEngine faceEngine) {
         this.faceEngine = faceEngine;
     }
-
-    ;
 
 
     public
@@ -79,7 +77,6 @@ public class FaceEngineFacade {
     @Setter
     @Accessors(chain = true)
     public static class Builder {
-        private LibManager.Version version = LibManager.Version.LINUX_X64;
         private String libPath = "face-recognize-jni/src/main/resources/";
         private Device device = Device.AUTO;
         private int deviceId = 0;
@@ -89,7 +86,8 @@ public class FaceEngineFacade {
         private String modelPath = null;
 
         public FaceEngineFacade build() throws IllegalAccessException {
-            FaceEngine faceEngine = new LibManager(version, libPath).init();
+            LibManager.loadLibrary(libPath);
+            FaceEngine faceEngine = LibManager.instance();
             if (modelPath == null) {
                 modelPath = point.getPath();
             }
@@ -157,6 +155,10 @@ public class FaceEngineFacade {
         return faceEngine.registerByCroppedFace(img);
     }
 
+    public boolean delete(int index) {
+        return faceEngine.delete(index);
+    }
+
     public QueryResult queryByCroppedFace(ImageData faceImg) {
         return faceEngine.queryByCroppedFace(faceImg);
     }
@@ -192,6 +194,20 @@ public class FaceEngineFacade {
 
     public double get(Property property) {
         return faceEngine.get(property.ordinal());
+    }
+
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void death() {
+        live = false;
+    }
+
+    public void destroy() {
+        faceEngine.destroy();
+        live = false;
     }
 
 }

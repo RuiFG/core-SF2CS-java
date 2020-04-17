@@ -45,7 +45,6 @@ public class AsyncPoolConfig {
             executor = new ThreadPoolTaskExecutor();
             executor.setCorePoolSize(faceRecognizeProperty.getCorePoolSize());
             executor.setMaxPoolSize(faceRecognizeProperty.getMaxPoolSize());
-            executor.setKeepAliveSeconds(faceRecognizeProperty.getKeepAliveSeconds());
             executor.setThreadNamePrefix(NAME);
             executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
             return executor;
@@ -53,23 +52,6 @@ public class AsyncPoolConfig {
 
         @Async(NAME)
         public <T> CompletableFuture<T> start(FaceRecognizeTask<T> faceRecognizeTask) {
-            if (ObjectUtils.isEmpty(THREAD_LOCAL.get())) {
-                try {
-                    FaceEngineFacade faceEngineFacade = FaceEngineFacade.builder()
-                            .setWidth(faceRecognizeProperty.getCoreWidth())
-                            .setHeight(faceRecognizeProperty.getCoreHeight())
-                            .setPoint(faceRecognizeProperty.getPoint())
-                            .setVersion(faceRecognizeProperty.getVersion())
-                            .setDevice(faceRecognizeProperty.getDevice())
-                            .setDeviceId(faceRecognizeProperty.getDeviceId())
-                            .setModelPath(faceRecognizeProperty.getModelPath())
-                            .setLibPath(faceRecognizeProperty.getLibPath())
-                            .build();
-                    THREAD_LOCAL.set(faceEngineFacade);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException("初始化引擎失败");
-                }
-            }
             return CompletableFuture.completedFuture(faceRecognizeTask.run(THREAD_LOCAL.get()));
         }
 

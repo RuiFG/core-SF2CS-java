@@ -14,7 +14,11 @@ import java.io.IOException;
  **/
 public class App {
     public static void main(String[] args) throws IOException, IllegalAccessException {
-        FaceEngineFacade faceEngineFacade = FaceEngineFacade.builder().setVersion(LibManager.Version.LINUX_X64)
+        FaceEngineFacade faceEngineFacade = FaceEngineFacade.builder()
+                .setDevice(FaceEngineFacade.Device.AUTO)
+                .setPoint(FaceEngineFacade.Point.MODEL_81).
+                        build();
+        FaceEngineFacade faceEngineFacade1 = FaceEngineFacade.builder()
                 .setDevice(FaceEngineFacade.Device.AUTO)
                 .setPoint(FaceEngineFacade.Point.MODEL_81).
                         build();
