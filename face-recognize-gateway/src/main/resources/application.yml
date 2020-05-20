@@ -1,6 +1,12 @@
 spring:
   application:
     name: gateway
+  redis:
+    host: 127.0.0.1
+    timeout: 60
+    port: 6379
+    database: 0
+    password:
   cloud:
     consul:
       discovery:
@@ -12,6 +18,10 @@ spring:
         websocket:
           max-frame-payload-length: 10485760
       routes:
+        - id: img
+          uri: lb://server
+          predicates:
+            - Path=/img/**
         - id: management-publish
           uri: lb://management
           predicates:
@@ -22,7 +32,7 @@ spring:
         - id: management-collector
           uri: lb://management
           predicates:
-            - Path=/management//collect/*/*
+            - Path=/management/collect/*/*
           filters:
             - StripPrefix=1
             - WebSocketAuthorize=true
@@ -43,13 +53,13 @@ spring:
         - id: auth-code
           uri: lb://authorization
           predicates:
-            - Path=/authorization/oauth/code/*
+            - Path=/authorization/login,/authorization/logout
           filters:
             - StripPrefix=1
-        - id: auth-me
+        - id: authorization
           uri: lb://authorization
           predicates:
-            - Path=/authorization/auth/me
+            - Path=/authorization/**
           filters:
             - StripPrefix=1
             - Authorize=true

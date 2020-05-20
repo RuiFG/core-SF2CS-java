@@ -1,6 +1,6 @@
 package in.bugr.jni.model;
 
-import in.bugr.entity.Gather;
+import in.bugr.common.entity.Gather;
 
 /**
  * @author BugRui

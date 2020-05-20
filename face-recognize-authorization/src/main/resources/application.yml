@@ -19,19 +19,19 @@ spring:
     port: 6379
     database: 0
     password:
-  main:
-    allow-bean-definition-overriding: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://118.24.1.170:8888/.well-known/jwks.json
   cloud:
     consul:
       discovery:
         service-name: ${spring.application.name}
       host: localhost
       port: 8500
+#  main:
+#    allow-bean-definition-overriding: true
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: http://118.24.1.170:8888/.well-known/jwks.json
 
 application:
   oauth:

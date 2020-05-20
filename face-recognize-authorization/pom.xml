@@ -55,19 +55,6 @@
             <groupId>in.bugr</groupId>
             <artifactId>face-recognize-common</artifactId>
         </dependency>
-<!--        &lt;!&ndash;        oauth2&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-oauth2-resource-server</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-oauth2-jose</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-config</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
 
 </project>

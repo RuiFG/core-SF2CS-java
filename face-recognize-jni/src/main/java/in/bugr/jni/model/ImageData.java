@@ -1,7 +1,7 @@
 package in.bugr.jni.model;
 
-import in.bugr.entity.Person;
-import in.bugr.ImageHelper;
+import in.bugr.common.entity.Person;
+import in.bugr.common.ImageHelper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,14 +13,6 @@ import java.io.IOException;
  */
 public class ImageData {
     public static class ModelMapper {
-        public static ImageData toImageData(Person person) throws IOException {
-            ImageData imageData = new ImageData();
-            imageData.data = person.getFaceData();
-            imageData.channels = person.getChannels();
-            imageData.width = person.getWidth();
-            imageData.height = person.getHeight();
-            return imageData;
-        }
 
         public static ImageData toImageData(BufferedImage bufferedImage) {
             byte[] bytes = ImageHelper.getMatrixBGR(bufferedImage);
