@@ -52,7 +52,7 @@ public class User  {
     /**
      * expires time
      */
-    @TimeToLive(unit = TimeUnit.MILLISECONDS)
+    @TimeToLive(unit = TimeUnit.HOURS)
     Long expiresIn;
 
     Set<Role> authorities;

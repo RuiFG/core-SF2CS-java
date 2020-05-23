@@ -19,8 +19,8 @@ import java.net.URISyntaxException;
  * @date 2020/5/17 下午4:11
  **/
 public class SocketProcess {
-    String detectHost = "http://127.0.0.1:8887/detect/5";
-    String collectHost = "http://127.0.0.1:8080/collect/5/fast-one";
+    String detectHost = "http://127.0.0.1:8888/detect/1";
+    String collectHost = "http://127.0.0.1:8080/collect/1/fast-one";
     private DetectClient detectClient;
     private CollectClient collectClient;
 

@@ -50,7 +50,11 @@ public class PublisherSocketHandler {
         sessionManagement.put(attendanceId, session);
         CollectorResource.@NotNull AttendanceManagement attendanceManagement = collectorResource.getAttendanceManagement();
         //如果没有收集任务
-        if (!attendanceManagement.contains(attendanceId)) {
+
+        if (attendanceManagement.getAll()
+                .stream()
+                .filter(attendance -> attendance.getId().equals(attendanceId))
+                .count() != 1) {
             session.close(new CloseReason(CloseReason.CloseCodes.NO_STATUS_CODE,
                     "没有当前任务"));
             return;

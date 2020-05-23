@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.util.ResourceUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -58,8 +59,8 @@ public class FaceEngineFacade {
         /**
          * 5点还是81点
          */
-        MODEL_5("face-recognize-jni/src/main/resources/model5"),
-        MODEL_81("face-recognize-jni/src/main/resources/model81");
+        MODEL_5("/seetaFace2/model5"),
+        MODEL_81("/seetaFace2/model81");
         private final String path;
     }
 
@@ -77,7 +78,7 @@ public class FaceEngineFacade {
     @Setter
     @Accessors(chain = true)
     public static class Builder {
-        private String libPath = "face-recognize-jni/src/main/resources/";
+        private String libPath = "/seetaFace2";
         private Device device = Device.AUTO;
         private int deviceId = 0;
         private int width = 640;

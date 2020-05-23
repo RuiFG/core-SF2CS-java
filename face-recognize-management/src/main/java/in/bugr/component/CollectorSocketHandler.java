@@ -106,8 +106,8 @@ public class CollectorSocketHandler {
     public void onError(@PathParam("gatherId") Long gatherId, Throwable error) {
         log.error("websocket出现错误");
         Attendance attendance = collectorResource.getAttendanceManagement().remove(gatherId);
-        attendanceRepository.delete(attendance);
         attendanceDetailRepository.deleteAllByAttendanceId(attendance.getId());
+        attendanceRepository.delete(attendance);
         error.printStackTrace();
     }
 
@@ -127,17 +127,20 @@ public class CollectorSocketHandler {
         recognitionResult.getPersons().forEach(detail -> {
             //If the person is already in memory, no action is taken
             //TODO If a person does not work for a long time,maybe we can refresh the publisher
-            if (attendanceManagement.addDetectPerson(gatherId, detail.getPersonId())) {
+            if (attendanceManagement.addDetectPerson(gatherId, detail)) {
                 Attendance attendance = attendanceManagement.get(gatherId);
-                AttendanceDetail attendanceDetail = new AttendanceDetail()
-                        .setAttendanceId(attendance.getId())
-                        .setFace(detail.getFace())
-                        .setPersonId(detail.getPersonId())
-                        .setScore(detail.getCompareScore())
-                        .setTime(LocalDateTime.now());
-                attendanceDetailRepository.save(attendanceDetail);
-                //send attendance's detail to publisher
-                sessionManagement.sendAll(attendance.getId(), detail);
+                AttendanceDetail attendanceDetail = attendanceDetailRepository
+                        .findByPersonIdAndAttendanceId(detail.getPersonId(), attendance.getId())
+                        .orElse(new AttendanceDetail()
+                                .setAttendanceId(attendance.getId())
+                                .setFace(detail.getFace())
+                                .setPersonId(detail.getPersonId())
+                                .setScore(detail.getCompareScore()));
+                if (attendanceDetail.getScore() >= detail.getCompareScore()) {
+                    attendanceDetailRepository.save(attendanceDetail.setTime(LocalDateTime.now()));
+                    //send attendance's detail to publisher
+                    sessionManagement.sendAll(attendance.getId(), detail);
+                }
             }
         });
     }

@@ -51,20 +51,11 @@
                 <groupId>in.bugr</groupId>
                 <artifactId>face-recognize-jni</artifactId>
                 <version>${project.version}</version>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>in.bugr</groupId>
                 <artifactId>face-recognize-common</artifactId>
                 <version>${project.version}</version>
-                <scope>import</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/com.corundumstudio.socketio/netty-socketio -->
-            <dependency>
-                <groupId>com.corundumstudio.socketio</groupId>
-                <artifactId>netty-socketio</artifactId>
-                <version>1.7.18</version>
-                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -108,7 +108,6 @@ public class DetectSocketHandler {
 
     @OnMessage(maxMessageSize = Constant.MAX_MESSAGE_SIZE)
     public void onMessage(@PathParam("gatherId") Long gatherId, byte[] imgData, Session session) throws IOException {
-        long begin = System.currentTimeMillis();
         List<GatherPerson> gatherPersonList = gatherPersonRepository.findAllByGatherIdAndControl(gatherId, false);
         if (CollectionUtils.isEmpty(gatherPersonList)) {
             log.error("gather 为空");
@@ -128,8 +127,10 @@ public class DetectSocketHandler {
         //初始化resultEntity 并赋予初值
         RecognitionResult recognitionResult = new RecognitionResult();
         executorService.submit(() -> {
+            long begin = System.currentTimeMillis();
             try {
                 FaceInfoArray faceInfoArray = faceEngineFacade.detectFace(imgData);
+                log.info("识别人脸"+faceInfoArray.size);
                 if (ObjectUtils.isNotEmpty(faceInfoArray)) {
                     for (int index = 0; index < faceInfoArray.size; index++) {
                         PointFloatArray pointFloatArray = faceEngineFacade.detectPoints(ImageData.ModelMapper.toImageData(imgData), faceInfoArray.faceInfos[index]);
@@ -146,6 +147,7 @@ public class DetectSocketHandler {
                 //TODO 异常
                 log.error("识别失败");
             } finally {
+                log.info("识别结果"+recognitionResult.toString());
                 sendObject(session, recognitionResult);
             }
             log.info("识别耗时:" + (System.currentTimeMillis() - begin) + "ms");

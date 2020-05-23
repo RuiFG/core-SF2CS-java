@@ -1,5 +1,6 @@
 package in.bugr.consistent;
 
+import in.bugr.common.message.RecognitionResult;
 import in.bugr.entity.Attendance;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class CollectorResource {
     }
 
     public static class AttendanceManagement extends SimpleObjectManagement<Long, Attendance> {
-        public boolean addDetectPerson(Long gatherId, Long personId) {
+        public boolean addDetectPerson(Long gatherId, RecognitionResult.Detail detail) {
             Attendance attendance = getMap().get(gatherId);
             if (ObjectUtils.isEmpty(attendance)) {
                 log.error("该gather考勤不存在");
@@ -35,16 +36,20 @@ public class CollectorResource {
             }
             List<Long> notDetectPersonIds = attendance.getNotDetectPersonIds();
             List<Long> detectPersonIds = attendance.getDetectPersonIds();
-            if (BooleanUtils.and(new boolean[]{notDetectPersonIds.contains(personId), detectPersonIds.contains(personId)})) {
+            if (detail.getCompareScore() <= 0.6f) {
+                return false;
+            }
+            long personId = detail.getPersonId();
+            if (BooleanUtils.and(new boolean[]{notDetectPersonIds.contains(personId),
+                    detectPersonIds.contains(personId)})) {
                 log.error("该person不存在");
                 return false;
             }
             if (notDetectPersonIds.contains(personId)) {
                 notDetectPersonIds.remove(personId);
                 detectPersonIds.add(personId);
-                return true;
             }
-            return false;
+            return true;
         }
     }
 

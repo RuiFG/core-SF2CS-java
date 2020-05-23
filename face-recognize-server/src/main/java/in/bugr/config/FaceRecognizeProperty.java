@@ -50,7 +50,7 @@ public class FaceRecognizeProperty {
     /**
      * 动态链接库路径
      */
-    private String libPath = "face-recognize-jni/src/main/resources/";
+    private String libPath = "/seetaFace2";
     /**
      * 输入的图片宽度
      */
