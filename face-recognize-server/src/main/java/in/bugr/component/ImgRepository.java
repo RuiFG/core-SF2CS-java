@@ -13,8 +13,8 @@ import java.util.UUID;
  * @date 2020/4/19 下午1:28
  **/
 public class ImgRepository {
-    private static final String AVATAR_PATH = "/home/bugrui/avatar/";
-    private static final String FACE_PATH = "/home/bugrui/face/";
+    private static final String AVATAR_PATH = "/avatar/";
+    private static final String FACE_PATH = "/face/";
     private static final String FORMATS = ".png";
 
     private static String write(BufferedImage bufferedImage, String path) throws IOException {

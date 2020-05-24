@@ -7,14 +7,14 @@ spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://127.0.0.1:3306/sf2cs?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
+    url: jdbc:mysql://mysql:3306/sf2cs?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&autoReconnect=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
   redis:
-    host: 127.0.0.1
+    host: redis
     timeout: 60
     port: 6379
     database: 0
@@ -23,7 +23,7 @@ spring:
     consul:
       discovery:
         service-name: ${spring.application.name}
-      host: localhost
+      host: consul
       port: 8500
 #  main:
 #    allow-bean-definition-overriding: true

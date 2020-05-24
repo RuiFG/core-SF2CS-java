@@ -13,14 +13,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author BugRui
  * @date 2020/5/17 下午4:11
  **/
 public class SocketProcess {
-    String detectHost = "http://127.0.0.1:8888/detect/1";
-    String collectHost = "http://127.0.0.1:8080/collect/1/fast-one";
+    String detectHost = "http://34.92.68.194:9999/server/detect/5";
+    String collectHost = "http://34.92.68.194:9999/management/collect/5/fast-one";
     private DetectClient detectClient;
     private CollectClient collectClient;
 
@@ -30,9 +31,9 @@ public class SocketProcess {
         detectClient.addObServer(collectClient);
     }
 
-    public void connect() {
-        detectClient.connect();
-        collectClient.connect();
+    public void connect() throws InterruptedException {
+        detectClient.connectBlocking();
+        collectClient.connectBlocking();
     }
 
     public void sendImage(BufferedImage bufferedImage) throws IOException {
@@ -47,10 +48,10 @@ public class SocketProcess {
         detectClient.close();
     }
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, InterruptedException {
         SocketProcess socketProcess = new SocketProcess();
         socketProcess.connect();
-        String videoPath = ResourceUtils.CLASSPATH_URL_PREFIX + "video.mp4";
+        String videoPath = "/home/bugrui/video.mp4";
         try {
             File video = ResourceUtils.getFile(videoPath);
             FFmpegFrameGrabber ff = new FFmpegFrameGrabber(video);

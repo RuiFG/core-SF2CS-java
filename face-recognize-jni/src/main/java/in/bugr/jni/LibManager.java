@@ -22,8 +22,6 @@ public class LibManager {
         WINDOWS_X64("windows-x64", "Windows 调用sf2cs-interface x64位"),
 
         LINUX_X64("linux-x64", "Linux 调用sf2cs-interface x64位",
-                "libSeetaFaceDetector.so.d80ecca", "libSeetaFaceRecognizer.so.d80ecca", "libSeetaFaceLandmarker.so.d80ecca",
-                "libSeetaFaceTracker.so.d80ecca", "libSeetaQualityAssessor.so.d80ecca",
                 "libSeetaFaceDetector.so", "libSeetaFaceRecognizer.so", "libSeetaFaceLandmarker.so",
                 "libSeetaFaceTracker.so", "libSeetaQualityAssessor.so",
                 "libSF2CS-Interface.so"),
@@ -80,8 +78,7 @@ public class LibManager {
                     for (String filename : VERSION.getLibFiles()) {
                         // 仅load dll
                         if (filename.toLowerCase().endsWith(".dll") ||
-                                filename.toLowerCase().endsWith(".so") ||
-                                filename.toLowerCase().endsWith("d80ecca")) {
+                                filename.toLowerCase().contains(".so")) {
                             try {
                                 loadLibrary(LIB_PATH, filename);
                             } catch (IOException e) {

@@ -69,11 +69,9 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
                 if (!ObjectUtils.isEmpty(list)) {
                     HttpMethod method = request.getMethod();
                     String url = request.getPath().value();
-                    boolean access = false;
-                    String token = "";
                     Map<String, Object> map = authFeignClient.hasPermission(String.valueOf(method), url, list.get(0));
-                    access = (boolean) map.getOrDefault("access", false);
-                    token = (String) map.getOrDefault("token", "");
+                    boolean access = (boolean) map.getOrDefault("access", false);
+                    String token = (String) map.getOrDefault("token", "");
 
                     if (access) {
                         String value = ServerWebExchangeUtils.expand(exchange, token);
